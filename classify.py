@@ -10,7 +10,7 @@ import time
 from datetime import timedelta
 
 
-base_dir = 'checkpoint/textcnn/'
+base_dir = 'textcnn/'
 test_dir = os.path.join(base_dir, 'test.txt') #测试文件
 vocab_dir = os.path.join(base_dir, 'vocab.txt')  #词汇表
 save_path = os.path.join(base_dir, 'best_validation')   # 预训练模型保存位置
