@@ -62,8 +62,6 @@ def train():
 
     # 配置 Saver
     saver = tf.train.Saver()
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir)
 
     print("Loading training and validation data...")
     # 载入训练集与验证集
@@ -77,6 +75,12 @@ def train():
     session = tf.Session()
     session.run(tf.global_variables_initializer())
     writer.add_graph(session.graph)
+
+    #若存在中间模型，则直接读入
+    if os.path.exists(save_dir):
+        saver.restore(sess=session, save_path=save_path)  # 读取保存的模型
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
 
     print('Training and evaluating...')
     start_time = time.time()
