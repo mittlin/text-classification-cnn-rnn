@@ -62,6 +62,8 @@ def train():
 
     # 配置 Saver
     saver = tf.train.Saver()
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
 
     print("Loading training and validation data...")
     # 载入训练集与验证集
@@ -77,10 +79,12 @@ def train():
     writer.add_graph(session.graph)
 
     #若存在中间模型，则直接读入
-    if os.path.exists(save_dir):
-        saver.restore(sess=session, save_path=save_path)  # 读取保存的模型
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir)
+    ckpt = tf.train.get_checkpoint_state(save_dir)
+    if ckpt and ckpt.model_checkpoint_path:
+        print('\nTraining from checkpoint.\n')
+        saver.restore(sess, ckpt.model_checkpoint_path)
+    else:
+        print('\nNo checkpoint found!!! Training from Start.\n')
 
     print('Training and evaluating...')
     start_time = time.time()
