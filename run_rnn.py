@@ -77,6 +77,14 @@ def train():
     session = tf.Session()
     session.run(tf.global_variables_initializer())
     writer.add_graph(session.graph)
+    
+    #若存在中间模型，则直接读入
+    ckpt = tf.train.get_checkpoint_state(save_dir)
+    if ckpt and ckpt.model_checkpoint_path:
+        print('\nTraining from checkpoint.\n')
+        saver.restore(sess, ckpt.model_checkpoint_path)
+    else:
+        print('\nNo checkpoint found!!! Training from Start.\n')
 
     print('Training and evaluating...')
     start_time = time.time()
